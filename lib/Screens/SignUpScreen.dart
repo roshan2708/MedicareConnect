@@ -3,28 +3,31 @@ import 'package:medicare_connect/Components/CustomButton.dart';
 import 'package:medicare_connect/Components/CustomTextInputField.dart';
 import 'package:medicare_connect/Constants/Colors.dart';
 import 'package:medicare_connect/Screens/HomeScreen.dart';
-import 'package:medicare_connect/Screens/SignUpScreen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _licenseController = TextEditingController();
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _licenseController.dispose();
     super.dispose();
   }
 
-  void _login() {
+  void _signup() {
     if (_formKey.currentState!.validate()) {
       Navigator.pushReplacement(
         context,
@@ -39,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Doctor Login'),
+        title: const Text('Doctor Registration'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -55,15 +58,27 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 SizedBox(height: size.height * 0.05),
                 Text(
-                  'Welcome Back, Doctor',
+                  'Create Account',
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 SizedBox(height: size.height * 0.02),
                 Text(
-                  'Please login to continue',
+                  'Register as a doctor',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(height: size.height * 0.05),
+                CustomTextField(
+                  controller: _nameController,
+                  label: 'Full Name',
+                  hintText: 'Enter your full name',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your name';
+                    }
+                    return null;
+                  },
+                ),
+                SizedBox(height: size.height * 0.02),
                 CustomTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -74,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       return 'Please enter your email';
                     }
                     if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                        .hasMatch(value)) {
+ .hasMatch(value)) {
                       return 'Please enter a valid email';
                     }
                     return null;
@@ -96,22 +111,31 @@ class _LoginScreenState extends State<LoginScreen> {
                     return null;
                   },
                 ),
+                SizedBox(height: size.height * 0.02),
+                CustomTextField(
+                  controller: _licenseController,
+                  label: 'Medical License Number',
+                  hintText: 'Enter your license number',
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter your license number';
+                    }
+                    return null;
+                  },
+                ),
                 SizedBox(height: size.height * 0.03),
                 CustomButton(
-                  text: 'Login',
-                  onPressed: _login,
+                  text: 'Register',
+                  onPressed: _signup,
                   width: size.width * 0.9,
                 ),
                 SizedBox(height: size.height * 0.02),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignupScreen()),
-                    );
+                    Navigator.pop(context);
                   },
                   child: const Text(
-                    'Don\'t have an account? Sign Up',
+                    'Already have an account? Login',
                     style: TextStyle(color: AppColors.primary),
                   ),
                 ),

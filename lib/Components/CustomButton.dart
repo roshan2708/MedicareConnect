@@ -1,40 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:medicare_connect/Constants/Colors.dart';
 
-class CustomButton extends StatefulWidget {
-  const CustomButton({super.key});
+class CustomButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final double? width;
 
-  @override
-  State<CustomButton> createState() => _CustomButtonState();
-}
+  const CustomButton({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.width,
+  });
 
-class _CustomButtonState extends State<CustomButton> {
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    
     return Container(
-      height: MediaQuery.of(context).size.height * 0.07,
-      width: MediaQuery.of(context).size.width * 0.9,
-      child: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              // Define the action for the button here
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.green, // Button color
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30), // Rounded corners
-              ),
-            ),
-            child: const Text(
-              'Custom Button',
-              style: TextStyle(
-                color: Colors.white, // Text color
-                fontSize: 16, // Text size
-              ),
-            ),
+      width: width ?? size.width * 0.9,
+      margin: EdgeInsets.symmetric(vertical: size.height * 0.01),
+      child: ElevatedButton(
+        onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.symmetric(vertical: size.height * 0.02),
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
           ),
-
-        ],
+        ),
       ),
     );
   }
